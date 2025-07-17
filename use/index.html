@@ -511,6 +511,39 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="Service Provider">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#developer-environment-for-a-commercial-application" class="md-nav__link">
+    <span class="md-ellipsis">
+      Developer environment for a commercial application
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#test-saml-application" class="md-nav__link">
+    <span class="md-ellipsis">
+      Test SAML application
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#buildrun-your-own-service-provider" class="md-nav__link">
+    <span class="md-ellipsis">
+      Build/run your own service provider
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
         
       </ul>
@@ -730,6 +763,39 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="Service Provider">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#developer-environment-for-a-commercial-application" class="md-nav__link">
+    <span class="md-ellipsis">
+      Developer environment for a commercial application
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#test-saml-application" class="md-nav__link">
+    <span class="md-ellipsis">
+      Test SAML application
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#buildrun-your-own-service-provider" class="md-nav__link">
+    <span class="md-ellipsis">
+      Build/run your own service provider
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
         
       </ul>
@@ -764,6 +830,7 @@
 <li>A service provider (application) to test with.</li>
 </ul>
 <p>Read on for more details on all three prerequisites.</p>
+<p>If you feel a bit lost reading this, you should check out the <a href="../saml/">Mechanics of SAML</a> and <a href="../dictionary/">SAML Dictionary</a> first.</p>
 <h2 id="big-warning-do-not-skip">BIG WARNING - DO NOT SKIP<a class="headerlink" href="#big-warning-do-not-skip" title="Permanent link">&para;</a></h2>
 <p><strong>DO NOT TEST THIS IN A PRODUCTION ENVIRONMENT.</strong></p>
 <p><strong>DO NOT TEST THIS AGAINST A PRODUCTION APPLICATION.</strong></p>
@@ -784,6 +851,8 @@
 <p>There are a lot of options for identity providers out there. The only thing that is important here is that you choose one that permits the import of either a PKCS#12 (.pfx) or PEM files.</p>
 <p>For available options, including those that have been tested against SAMLSmith, see <a href="../identityproviders/">Identity Providers</a>.</p>
 <p>All identity providers also have different dependencies and/or configuration required before they are likely capable of being used for federated authentication with SAML. If you skip any steps or dependencies it's likely you won't get very far.</p>
+<p>In theory, you don't <em>really</em> need an identity provider. The service provider is going to request a metadata XML and/or configuration from the identity provider, but considering that response forging is effectively out-of-band from the identity provider, items such as the Entity ID, Issuer, etc. can just be made up. This would easy especially with service providers that support IdP-initiated sign-in. Note that some service providers <em>might</em> try to reach out to URL's provided, so your mileage may vary depending on the service provider.</p>
+<p>For most real-world impact though, using an identity provider is beneficial because it provides a connection to real-world systems - if you are using Entra ID and then show a forged response that mirrors that of the actual Entra tenant in question, it hits that much harder.</p>
 <h3 id="signing-certificate">Signing Certificate<a class="headerlink" href="#signing-certificate" title="Permanent link">&para;</a></h3>
 <p>It's generally easier to generate a self-signed certificate and then import it into a compatible identity provider, than to extract the private key material from ones that may permit it.</p>
 <p>If you are specifically researching AD FS, then you may want to try and extract the material from that environment for forging.</p>
@@ -792,6 +861,24 @@
 <h4 id="generating-with-powershell">Generating with PowerShell<a class="headerlink" href="#generating-with-powershell" title="Permanent link">&para;</a></h4>
 <h4 id="generating-with-openssl">Generating with openssl<a class="headerlink" href="#generating-with-openssl" title="Permanent link">&para;</a></h4>
 <h3 id="service-provider">Service Provider<a class="headerlink" href="#service-provider" title="Permanent link">&para;</a></h3>
+<p>Any application that supports SAML 2.0 is a service provider.</p>
+<p>In theory, you don't <em>really</em> need a service provider if you simply want to test generating a SAML response and examining it. But if you want to see what response forging looks like end-to-end, then you should setup a service provider.</p>
+<p>There are generally a few different routes available:</p>
+<h4 id="developer-environment-for-a-commercial-application">Developer environment for a commercial application<a class="headerlink" href="#developer-environment-for-a-commercial-application" title="Permanent link">&para;</a></h4>
+<p>Some large SaaS companies, like Salesforce and ServiceNow, offer developer programs which give you a developer instance of their platform. In these scenarios, you can federate your developer instance of their application to your identity provider.</p>
+<p>The benefit here is that this provides the most real-world simulation, and also the most shock and awe. If you are trying to convince someone that SAML response forging is a real thing, then this showcases it against a real application.</p>
+<p>If you go this route please be respectful of the developer programs and guidelines. Developer programs, when abused, can be shutdown or restricted by the company that is offering it - just take a look at the Microsoft 365 Developer Program.</p>
+<p><em>Some developer programs may have activity monitors and will time-limit your environment if not active in it</em>.</p>
+<h4 id="test-saml-application">Test SAML application<a class="headerlink" href="#test-saml-application" title="Permanent link">&para;</a></h4>
+<p>There is a mix of test SAML applications out there that will consume a SAML response, but the application itself exits for nothing other than testing and configuring SAML.</p>
+<p>These are relatively easy to setup, and some will provide useful information for displaying the information within the SAML response - many of these are written to help ITPros debug SAML claim rules before putting them into production.</p>
+<p>These have a little less of a wow factor because they are not real applications with real users and real data. They generally will accept any response, as long as it's a valid response.</p>
+<p>The following are some example sites. Note that we have not tested these, so your mileage may vary.</p>
+<p><a href="https://sptest.iamshowcase.com/">RSA Test Service Provider</a></p>
+<p><a href="https://claimsxray.net/">Claims X-Ray</a></p>
+<h4 id="buildrun-your-own-service-provider">Build/run your own service provider<a class="headerlink" href="#buildrun-your-own-service-provider" title="Permanent link">&para;</a></h4>
+<p>The last option is to build or run your own service provider and integrate it with your identity provider.</p>
+<p><a href="http://www.testshib.org/">TestShib</a> has some resources on setting up an instance of Shibboleth as a service provider. Note that Shibboleth and Entra ID can be a bit finicky in configuring to play nice together.</p>
 
 
 
