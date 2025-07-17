@@ -822,7 +822,7 @@
   
 
 
-<h1 id="identity-providers">Identity Providers</h1>
+<h1 id="identity-providers">Identity Providers<a class="headerlink" href="#identity-providers" title="Permanent link">&para;</a></h1>
 <p>Not every identity provider is susceptible to resposne forging. And even those that are may require a different level of work to obtain the private key material needed for response forging.</p>
 <p>Note that the ability to forge a SAML response from a specific identity provider does not make a statement about the overall security posture of the identity provider. As signing key material can be left "laying around" by administrators, finding the signing key material does not indicate that there is anything inherently insecure about the identity provider itself.</p>
 <p>At the core of it, for each identity provider you want to forge a response for, the identity provider must either:</p>
@@ -836,25 +836,25 @@
 <li>Those whose documentation shows that a it should be possible but have not been tested.</li>
 <li>Those whose documentation shows that it should <strong>not</strong> be possible to forge a SAML response.</li>
 </ul>
-<h2 id="samlsmith-tested">SAMLSmith Tested</h2>
+<h2 id="samlsmith-tested">SAMLSmith Tested<a class="headerlink" href="#samlsmith-tested" title="Permanent link">&para;</a></h2>
 <p>The following identity providers have had a response successfully forged by SAMLSmith</p>
-<h3 id="microsoft-entra-id">Microsoft Entra ID</h3>
+<h3 id="microsoft-entra-id">Microsoft Entra ID<a class="headerlink" href="#microsoft-entra-id" title="Permanent link">&para;</a></h3>
 <p>https://learn.microsoft.com/en-us/entra/identity/</p>
-<h3 id="pingidentity-pingone-for-workforce">PingIdentity PingOne for Workforce</h3>
+<h3 id="pingidentity-pingone-for-workforce">PingIdentity PingOne for Workforce<a class="headerlink" href="#pingidentity-pingone-for-workforce" title="Permanent link">&para;</a></h3>
 <p>https://docs.pingidentity.com/pingone/release_notes/index.html</p>
-<h3 id="microsoft-active-directory-federation-services-ad-fs">Microsoft Active Directory Federation Services (AD FS)</h3>
+<h3 id="microsoft-active-directory-federation-services-ad-fs">Microsoft Active Directory Federation Services (AD FS)<a class="headerlink" href="#microsoft-active-directory-federation-services-ad-fs" title="Permanent link">&para;</a></h3>
 <p>https://learn.microsoft.com/en-us/windows-server/identity/ad-fs/ad-fs-overview</p>
-<h3 id="jumpcloud">Jumpcloud</h3>
+<h3 id="jumpcloud">Jumpcloud<a class="headerlink" href="#jumpcloud" title="Permanent link">&para;</a></h3>
 <p>https://jumpcloud.com/support/get-started</p>
-<h2 id="should-work-but-not-tested">Should work but not tested</h2>
-<h3 id="one-identity-onelogin">One Identity OneLogin</h3>
+<h2 id="should-work-but-not-tested">Should work but not tested<a class="headerlink" href="#should-work-but-not-tested" title="Permanent link">&para;</a></h2>
+<h3 id="one-identity-onelogin">One Identity OneLogin<a class="headerlink" href="#one-identity-onelogin" title="Permanent link">&para;</a></h3>
 <p>https://onelogin.service-now.com/support?id=kb_view2</p>
 <p>According to the OneLogin documentation, support must set a flag on a OneLogin directory to permit the ability to upload a .pfx file for SAML response signing.</p>
 <p>In our demo environment used for exploratory testing, this was not enabled.</p>
-<h2 id="not-possible-as-far-as-we-know">Not possible (as far as we know)</h2>
-<h3 id="google-cloud-iam">Google Cloud IAM</h3>
+<h2 id="not-possible-as-far-as-we-know">Not possible (as far as we know)<a class="headerlink" href="#not-possible-as-far-as-we-know" title="Permanent link">&para;</a></h2>
+<h3 id="google-cloud-iam">Google Cloud IAM<a class="headerlink" href="#google-cloud-iam" title="Permanent link">&para;</a></h3>
 <p>Google Cloud IAM provides the ability to roll certificates, but does not appear to offer the ability to import an external private key for signing.</p>
-<h3 id="okta">Okta</h3>
+<h3 id="okta">Okta<a class="headerlink" href="#okta" title="Permanent link">&para;</a></h3>
 <p>Okta only supports an exteral keypair through the use of a CSR. Therefore, Okta is generating and holding the private key at all times. It is not possible to export the keypair through Okta APIs.</p>
 
 
