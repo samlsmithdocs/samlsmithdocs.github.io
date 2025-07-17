@@ -403,6 +403,19 @@
         
       
       
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    Using SAMLSmith
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
       <a href="./" class="md-nav__link md-nav__link--active">
         
   
@@ -414,6 +427,100 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#big-warning-do-not-skip" class="md-nav__link">
+    <span class="md-ellipsis">
+      BIG WARNING - DO NOT SKIP
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#prerequisites" class="md-nav__link">
+    <span class="md-ellipsis">
+      Prerequisites
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Prerequisites">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#identity-provider" class="md-nav__link">
+    <span class="md-ellipsis">
+      Identity Provider
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#signing-certificate" class="md-nav__link">
+    <span class="md-ellipsis">
+      Signing Certificate
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Signing Certificate">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#generating-with-powershell" class="md-nav__link">
+    <span class="md-ellipsis">
+      Generating with PowerShell
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#generating-with-openssl" class="md-nav__link">
+    <span class="md-ellipsis">
+      Generating with openssl
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#service-provider" class="md-nav__link">
+    <span class="md-ellipsis">
+      Service Provider
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
       
     </li>
   
@@ -549,6 +656,89 @@
     
   
   
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#big-warning-do-not-skip" class="md-nav__link">
+    <span class="md-ellipsis">
+      BIG WARNING - DO NOT SKIP
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#prerequisites" class="md-nav__link">
+    <span class="md-ellipsis">
+      Prerequisites
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Prerequisites">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#identity-provider" class="md-nav__link">
+    <span class="md-ellipsis">
+      Identity Provider
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#signing-certificate" class="md-nav__link">
+    <span class="md-ellipsis">
+      Signing Certificate
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Signing Certificate">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#generating-with-powershell" class="md-nav__link">
+    <span class="md-ellipsis">
+      Generating with PowerShell
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#generating-with-openssl" class="md-nav__link">
+    <span class="md-ellipsis">
+      Generating with openssl
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#service-provider" class="md-nav__link">
+    <span class="md-ellipsis">
+      Service Provider
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
 </nav>
                   </div>
                 </div>
@@ -567,6 +757,41 @@
 
 
 <h1 id="using-samlsmith">Using SAMLSmith<a class="headerlink" href="#using-samlsmith" title="Permanent link">&para;</a></h1>
+<p>In order to successfully test SAMLSmith and SAML response forging, you'll need the following:</p>
+<ul>
+<li>An identity provider that supports import of signing certificates.</li>
+<li>A PKCS#12 archive (or sometimes a PEM) that contains the public and private key pair.</li>
+<li>A service provider (application) to test with.</li>
+</ul>
+<p>Read on for more details on all three prerequisites.</p>
+<h2 id="big-warning-do-not-skip">BIG WARNING - DO NOT SKIP<a class="headerlink" href="#big-warning-do-not-skip" title="Permanent link">&para;</a></h2>
+<p><strong>DO NOT TEST THIS IN A PRODUCTION ENVIRONMENT.</strong></p>
+<p><strong>DO NOT TEST THIS AGAINST A PRODUCTION APPLICATION.</strong></p>
+<p><strong>DO NOT REPLACE A SIGNING CERTIFICATE IN A PRODUCTION SYSTEM.</strong></p>
+<p><strong>DO NOT EXTRACT SIGNING KEY MATERIAL FROM A PRODUCTION SYSTEM.</strong></p>
+<p><strong>DO NOT ADD A SIGNING CERTIFICATE IN A PRODUCTION SYSTEM.</strong></p>
+<p><strong>DO NOT REMOVE A SIGNING CERTIFICATE IN A PRODUCTION SYSTEM.</strong></p>
+<p><strong>DO NOT MESS WITH SAML CONFIGURATION SETTINGS IN A PRODUCTION SYSTEM.</strong></p>
+<p><strong>DO NOT TEST WITH PRODUCTION SIGNING KEY MATERIAL.</strong></p>
+<p>All that being said. Seriously. Do not try this stuff against prod. There are some <strong>BIG CONCERNS</strong>:</p>
+<ul>
+<li>Modifying the SAML configuration on the identity provider (IdP) or service provider (SP) side, not documenting the changes, and breaking things. <strong>This is how outages happen</strong>.</li>
+<li>Modifying the SAML signing certificate on the identity provider (IdP) or service provider (SP) side, something not going right, and breaking things. <strong>This is also how outages happen</strong>.</li>
+<li>Exposing the signing key material, in particular the private key. <strong>This is how actual breaches happen</strong>.</li>
+</ul>
+<h2 id="prerequisites">Prerequisites<a class="headerlink" href="#prerequisites" title="Permanent link">&para;</a></h2>
+<h3 id="identity-provider">Identity Provider<a class="headerlink" href="#identity-provider" title="Permanent link">&para;</a></h3>
+<p>There are a lot of options for identity providers out there. The only thing that is important here is that you choose one that permits the import of either a PKCS#12 (.pfx) or PEM files.</p>
+<p>For available options, including those that have been tested against SAMLSmith, see <a href="../identityproviders/">Identity Providers</a>.</p>
+<p>All identity providers also have different dependencies and/or configuration required before they are likely capable of being used for federated authentication with SAML. If you skip any steps or dependencies it's likely you won't get very far.</p>
+<h3 id="signing-certificate">Signing Certificate<a class="headerlink" href="#signing-certificate" title="Permanent link">&para;</a></h3>
+<p>It's generally easier to generate a self-signed certificate and then import it into a compatible identity provider, than to extract the private key material from ones that may permit it.</p>
+<p>If you are specifically researching AD FS, then you may want to try and extract the material from that environment for forging.</p>
+<p>If you are more interested in other response forging research, then use a self-signed certificate.</p>
+<p><em>AD FS does support the import of an externally generated signing certificate</em>.</p>
+<h4 id="generating-with-powershell">Generating with PowerShell<a class="headerlink" href="#generating-with-powershell" title="Permanent link">&para;</a></h4>
+<h4 id="generating-with-openssl">Generating with openssl<a class="headerlink" href="#generating-with-openssl" title="Permanent link">&para;</a></h4>
+<h3 id="service-provider">Service Provider<a class="headerlink" href="#service-provider" title="Permanent link">&para;</a></h3>
 
 
 
