@@ -463,6 +463,15 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
+  <a href="#samlsmith" class="md-nav__link">
+    <span class="md-ellipsis">
+      SAMLSmith
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#identity-provider" class="md-nav__link">
     <span class="md-ellipsis">
       Identity Provider
@@ -557,6 +566,21 @@
       Getting started
     </span>
   </a>
+  
+    <nav class="md-nav" aria-label="Getting started">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#json-file-format" class="md-nav__link">
+    <span class="md-ellipsis">
+      JSON File Format
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -724,6 +748,15 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
+  <a href="#samlsmith" class="md-nav__link">
+    <span class="md-ellipsis">
+      SAMLSmith
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#identity-provider" class="md-nav__link">
     <span class="md-ellipsis">
       Identity Provider
@@ -819,6 +852,21 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="Getting started">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#json-file-format" class="md-nav__link">
+    <span class="md-ellipsis">
+      JSON File Format
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
     </ul>
@@ -865,6 +913,9 @@
 <li>Exposing the signing key material, in particular the private key. <strong>This is how actual breaches happen</strong>.</li>
 </ul>
 <h2 id="prerequisites">Prerequisites<a class="headerlink" href="#prerequisites" title="Permanent link">&para;</a></h2>
+<h3 id="samlsmith">SAMLSmith<a class="headerlink" href="#samlsmith" title="Permanent link">&para;</a></h3>
+<p>You'll need to download and compile SAMLSmith from the <a href="https://github.com/semperis/samlsmith">SAMLSmith repo</a>.</p>
+<p>We do not provide a compiled version of the tool.</p>
 <h3 id="identity-provider">Identity Provider<a class="headerlink" href="#identity-provider" title="Permanent link">&para;</a></h3>
 <p>There are a lot of options for identity providers out there. The only thing that is important here is that you choose one that permits the import of either a PKCS#12 (.pfx) or PEM files.</p>
 <p>For available options, including those that have been tested against SAMLSmith, see <a href="../identityproviders/">Identity Providers</a>.</p>
@@ -873,9 +924,9 @@
 <p>For most real-world impact though, using an identity provider is beneficial because it provides a connection to real-world systems - if you are using Entra ID and then show a forged response that mirrors that of the actual Entra tenant in question, it hits that much harder.</p>
 <h3 id="signing-certificate">Signing Certificate<a class="headerlink" href="#signing-certificate" title="Permanent link">&para;</a></h3>
 <p>It's generally easier to generate a self-signed certificate and then import it into a compatible identity provider, than to extract the private key material from ones that may permit it.</p>
-<p>If you are specifically researching AD FS, then you may want to try and extract the material from that environment for forging.</p>
-<p>If you are more interested in other response forging research, then use a self-signed certificate.</p>
+<p>If you are specifically researching AD FS, then you may want to try and extract the material from that environment for forging, using a tool like <a href="https://github.com/mandiant/ADFSDump">ADFSDump</a>.</p>
 <p><em>AD FS does support the import of an externally generated signing certificate</em>.</p>
+<p>If you are more interested in other response forging research, then use a self-signed certificate.</p>
 <h4 id="generating-with-powershell">Generating with PowerShell<a class="headerlink" href="#generating-with-powershell" title="Permanent link">&para;</a></h4>
 <pre><code>$cert = New-SelfSignedCertificate –Subject &lt;samlcertname&gt; -CertStoreLocation Cert:\CurrentUser\My
 $pwd = Get-Credential
@@ -901,8 +952,31 @@ Export-PfxCertificate -Cert $cert -FilePath &lt;C:\path\samlcertname.pfx&gt; -Pa
 <p><a href="https://claimsxray.net/">Claims X-Ray</a></p>
 <h4 id="buildrun-your-own-service-provider">Build/run your own service provider<a class="headerlink" href="#buildrun-your-own-service-provider" title="Permanent link">&para;</a></h4>
 <p>The last option is to build or run your own service provider and integrate it with your identity provider.</p>
-<p><a href="http://www.testshib.org/">TestShib</a> has some resources on setting up an instance of Shibboleth as a service provider. Note that Shibboleth and Entra ID can be a bit finicky in configuring to play nice together.</p>
+<p><a href="http://www.testshib.org/">TestShib</a> has some resources on setting up an instance of Shibboleth as a service provider.</p>
+<p><em>Note that Shibboleth and Entra ID can be a bit finicky in configuring to play nice together.</em></p>
 <h2 id="getting-started">Getting started<a class="headerlink" href="#getting-started" title="Permanent link">&para;</a></h2>
+<p>Once you have your prerequisites complete, it's time to start forging responses.</p>
+<p>The tool supports command line arguments for feeding SAML attribute data <strong>or</strong> the ability to feed it a JSON file that contains the data.</p>
+<p>Generally speaking, it's easier to provide it a JSON file with the necessary data; it's how we've primarily used it.</p>
+<h3 id="json-file-format">JSON File Format<a class="headerlink" href="#json-file-format" title="Permanent link">&para;</a></h3>
+<p>The JSON file has the following structure:</p>
+<pre><code>{
+    "pfxPath": "C:\\certs\\signing.pfx",
+    "pfxPassword": "password123",
+    "idpid": "https://sts.company.com/adfs/services/trust",
+    "recipient": "https://app.company.com/sso/saml",
+    "subjectnameid": "user@company.com",
+    "audience": "https://app.company.com",
+    "inResponseTo": "optional_response_id",
+    "attributes": {
+        "http://schemas.microsoft.com/identity/claims/tenantid": "tenant-guid",
+        "http://schemas.microsoft.com/identity/claims/objectidentifier": "user-guid",
+        "http://schemas.microsoft.com/identity/claims/displayname": "John Doe",
+        "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress": "user@company.com",
+        "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name": "John Doe"
+    }
+}
+</code></pre>
 
 
 
